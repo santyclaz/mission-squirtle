@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Website</title>
+
+    <script>
+      function handleAudioFileSelect(event) {
+        console.log("handling file select...");
+        const files = event.target.files;
+        document
+          .getElementById("selected-audio-file-src")
+          .setAttribute("src", URL.createObjectURL(files[0]));
+        document.getElementById("selected-audio-file-player").load();
+      }
+
+      async function uploadAndCompareAudio() {
+        const url = "/api/upload-audio";
+        const file = document.getElementById("selected-audio-file-input")
+          .files[0];
+        const data = new FormData();
+        data.append("file", file);
+
+        try {
+          console.log("uploading file to server...");
+          const response = await fetch(url, {
+            method: "POST",
+            body: data,
+          });
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+
+          const json = await response.json();
+          console.log(json);
+          alert(json.message);
+        } catch (error) {
+          console.error(error.message);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>Welcome</h1>
+      <p>
+        <input
+          type="file"
+          id="selected-audio-file-input"
+          onchange="handleAudioFileSelect(event);"
+        />
+      </p>
+      <p>
+        <audio id="selected-audio-file-player" controls>
+          <source src="" id="selected-audio-file-src" />
+        </audio>
+      </p>
+      <p>
+        <a href="javascript:uploadAndCompareAudio()" aria-label="Run Code">
+          Run Code
+        </a>
+      </p>
+    </main>
+  </body>
+</html>
