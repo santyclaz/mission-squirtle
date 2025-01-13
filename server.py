@@ -2,6 +2,7 @@ import os
 from flask import Flask, jsonify, request
 from compare import compare_mfcc
 
+SERVER_PORT = 7777
 SERVER_ROOT_DIR = os.path.dirname(__file__)
 
 WEBSITE_STATIC_FOLDER = "website/static/"
@@ -52,4 +53,4 @@ def allowedFile(filename):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=SERVER_PORT, debug=True)
