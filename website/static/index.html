@@ -29,14 +29,23 @@
             body: data,
           });
           if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+            let err = new Error(`Response status: ${response.status}`);
+            err.response = response;
+            err.responseText = await response.text();
+            throw err;
           }
 
           const json = await response.json();
           console.log(json);
           alert(json.message);
         } catch (error) {
-          console.error(error.message);
+          console.error(error);
+
+          let msg = error.message;
+          if (error.responseText) {
+            msg = error.responseText;
+          }
+          alert(msg);
         }
       }
     </script>

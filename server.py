@@ -36,7 +36,7 @@ def api_upload_audio():
         return jsonify({"message": "No selected file"}), 400
 
     if not allowedFile(filename):
-        return jsonify({"message": "File type not allowed"}), 400
+        return jsonify({"message": "File type not allowed", "filename": filename}), 400
 
     print("Processing:", filename)
     file.save(os.path.join(SERVER_ROOT_DIR, UPLOAD_FOLDER, UPLOAD_FILENAME))
